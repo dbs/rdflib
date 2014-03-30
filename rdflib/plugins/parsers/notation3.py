@@ -39,7 +39,7 @@ from decimal import Decimal
 
 from uuid import uuid4
 
-from six import text_type
+from six import text_type, PY2, PY3
 from rdflib.term import URIRef, BNode, Literal, Variable, _XSD_PFX, _unique_id
 from rdflib.graph import QuotedGraph, ConjunctiveGraph, Graph
 from rdflib import py3compat
@@ -675,8 +675,13 @@ class SinkParser:
 
 
     def bind(self, qn, uri):
+        if PY3:
+            stype = bytes
+        else:
+            stype = types.StringType
+
         assert isinstance(
-            uri, types.StringType), "Any unicode must be %x-encoded already"
+            uri, stype), "Any unicode must be %x-encoded already"
         if qn == "":
             self._store.setDefaultNamespace(uri)
         else:
@@ -1445,7 +1450,10 @@ class SinkParser:
                 m = integer_syntax.match(argstr, i)
                 if m:
                     j = m.end()
-                    res.append(long(argstr[i:j]))
+                    if PY3:
+                        res.append(int(argstr[i:j]))
+                    else:
+                        res.append(long(argstr[i:j]))
                     return j
 
                 # return -1  ## or fall through?
@@ -1480,7 +1488,12 @@ class SinkParser:
                 return -1
 
     def uriOf(self, sym):
-        if isinstance(sym, types.TupleType):
+        if PY3:
+            ttype = tuple
+        else:
+            ttype = types.TupleType
+
+        if isinstance(sym, ttype):
             return sym[1]  # old system for --pipe
          # return sym.uriref()  # cwm api
         return sym
@@ -1766,7 +1779,11 @@ class RDFSink(object):
             s = Literal(str(n).lower(), datatype=BOOLEAN_DATATYPE)
             return s
 
-        if isinstance(n, int) or isinstance(n, long):
+        if isinstance(n, int):
+            s = Literal(text_type(n), datatype=INTEGER_DATATYPE)
+            return s
+
+        if PY2 and isinstance(n, long):
             s = Literal(text_type(n), datatype=INTEGER_DATATYPE)
             return s
 
