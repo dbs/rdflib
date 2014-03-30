@@ -3,7 +3,7 @@ import unittest
 import rdflib # needed for eval(repr(...)) below
 from rdflib.term import Literal, URIRef, _XSD_DOUBLE, bind
 from rdflib.py3compat import format_doctest_out as uformat
-
+from six import integer_types
 
 class TestLiteral(unittest.TestCase):
     def setUp(self):
@@ -53,7 +53,7 @@ class TestNew(unittest.TestCase):
         # change datatype
         l = Literal("1")
         l2 = Literal(l, datatype=rdflib.XSD.integer)
-        self.assertTrue(isinstance(l2.value, long))
+        self.assertTrue(isinstance(l2.value, integer_types))
 
 
 
