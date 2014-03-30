@@ -1,4 +1,5 @@
 from rdflib.py3compat import format_doctest_out
+from six.moves import xrange
 
 __doc__ = format_doctest_out("""
 ===================
