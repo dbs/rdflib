@@ -13,6 +13,7 @@ import uuid
 import hashlib
 from six import text_type
 from six.moves.urllib.parse import quote
+from six.moves import reduce
 
 from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 
@@ -585,12 +586,14 @@ def Function(e, ctx):
     if e.iri in XSD_DTs:
         # a cast
 
-        if not e.expr:
+        expr = list(e.expr)
+
+        if not expr or len(expr) == 0:
             raise SPARQLError("Nothing given to cast.")
-        if len(e.expr) > 1:
+        if len(list(e.expr)) > 1:
             raise SPARQLError("Cannot cast more than one thing!")
 
-        x = e.expr[0]
+        x = expr[0]
 
         if e.iri == XSD.string:
 
@@ -814,7 +817,7 @@ def ConditionalAndExpression(e, ctx):
     if other is None:
         return expr
 
-    return Literal(all(EBV(x) for x in [expr] + other))
+    return Literal(all(EBV(x) for x in [expr] + list(other)))
 
 
 def ConditionalOrExpression(e, ctx):
@@ -832,7 +835,7 @@ def ConditionalOrExpression(e, ctx):
     # will return TRUE if the other branch is TRUE and an error
     # if the other branch is FALSE.
     error = None
-    for x in [expr] + other:
+    for x in [expr] + list(other):
         try:
             if EBV(x):
                 return Literal(True)

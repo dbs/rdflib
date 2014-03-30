@@ -26,8 +26,7 @@ from rdflib.plugins.sparql.evalutils import (
     _filter, _eval, _join, _diff, _minus, _fillTemplate, _ebv)
 
 from rdflib.plugins.sparql.aggregates import evalAgg
-from six import next
-
+from six import iteritems, next
 
 def evalBGP(ctx, bgp):
 
@@ -188,7 +187,7 @@ def evalValues(ctx, part):
     for r in part.p.res:
         c = ctx.push()
         try:
-            for k, v in r.iteritems():
+            for k, v in iteritems(r):
                 if v != 'UNDEF':
                     c[k] = v
         except AlreadyBound:
@@ -408,7 +407,7 @@ def evalQuery(graph, query, initBindings, base=None):
     ctx.prologue = query.prologue
 
     if initBindings:
-        for k, v in initBindings.iteritems():
+        for k, v in iteritems(initBindings):
             if not isinstance(k, Variable):
                 k = Variable(k)
             ctx[k] = v
