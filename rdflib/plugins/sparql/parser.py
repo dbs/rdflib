@@ -170,7 +170,7 @@ PN_CHARS_re = u'\\-0-9\u00B7\u0300-\u036F\u203F-\u2040' + PN_CHARS_U_re
 # PN_CHARS = Regex(u'[%s]'%PN_CHARS_re, flags=re.U)
 
 # [168] PN_PREFIX ::= PN_CHARS_BASE ((PN_CHARS|'.')* PN_CHARS)?
-PN_PREFIX = Regex(ur'[%s](?:[%s\.]*[%s])?' % (PN_CHARS_BASE_re,
+PN_PREFIX = Regex(r'[%s](?:[%s\.]*[%s])?' % (PN_CHARS_BASE_re,
                   PN_CHARS_re, PN_CHARS_re), flags=re.U)
 
 # [140] PNAME_NS ::= PN_PREFIX? ':'
@@ -216,7 +216,7 @@ PN_LOCAL.setParseAction(lambda x: re.sub("(%s)"%PERCENT_re, _hexExpand, x[0]))
 PNAME_LN = PNAME_NS + Param('localname', PN_LOCAL.leaveWhitespace())
 
 # [142] BLANK_NODE_LABEL ::= '_:' ( PN_CHARS_U | [0-9] ) ((PN_CHARS|'.')* PN_CHARS)?
-BLANK_NODE_LABEL = Regex(ur'_:[0-9%s](?:[\.%s]*[%s])?' % (
+BLANK_NODE_LABEL = Regex(r'_:[0-9%s](?:[\.%s]*[%s])?' % (
     PN_CHARS_U_re, PN_CHARS_re, PN_CHARS_re), flags=re.U)
 BLANK_NODE_LABEL.setParseAction(lambda x: rdflib.BNode(x[0]))
 
@@ -287,14 +287,14 @@ DOUBLE_NEGATIVE.setParseAction(lambda x: neg(x[0]))
 # [158] STRING_LITERAL_LONG1 ::= "'''" ( ( "'" | "''" )? ( [^'\] | ECHAR ) )* "'''"
 # STRING_LITERAL_LONG1 = Literal("'''") + ( Optional( Literal("'") | "''"
 # ) + ZeroOrMore( ~ Literal("'\\") | ECHAR ) ) + "'''"
-STRING_LITERAL_LONG1 = Regex(ur"'''((?:'|'')?(?:[^'\\]|\\['ntbrf\\]))*'''")
+STRING_LITERAL_LONG1 = Regex(r"'''((?:'|'')?(?:[^'\\]|\\['ntbrf\\]))*'''")
 STRING_LITERAL_LONG1.setParseAction(
     lambda x: rdflib.Literal(decodeUnicodeEscape(x[0][3:-3])))
 
 # [159] STRING_LITERAL_LONG2 ::= '"""' ( ( '"' | '""' )? ( [^"\] | ECHAR ) )* '"""'
 # STRING_LITERAL_LONG2 = Literal('"""') + ( Optional( Literal('"') | '""'
 # ) + ZeroOrMore( ~ Literal('"\\') | ECHAR ) ) +  '"""'
-STRING_LITERAL_LONG2 = Regex(ur'"""(?:(?:"|"")?(?:[^"\\]|\\["ntbrf\\]))*"""')
+STRING_LITERAL_LONG2 = Regex(r'"""(?:(?:"|"")?(?:[^"\\]|\\["ntbrf\\]))*"""')
 STRING_LITERAL_LONG2.setParseAction(
     lambda x: rdflib.Literal(decodeUnicodeEscape(x[0][3:-3])))
 
@@ -312,7 +312,7 @@ STRING_LITERAL1.setParseAction(
 # Regex(u'[^\u0022\u005C\u000A\u000D]',flags=re.U) | ECHAR ) + '"'
 
 STRING_LITERAL2 = Regex(
-    ur'"(?:[^"\n\r\\]|\\["ntbrf\\])*"(?!")', flags=re.U)
+    r'"(?:[^"\n\r\\]|\\["ntbrf\\])*"(?!")', flags=re.U)
 STRING_LITERAL2.setParseAction(
     lambda x: rdflib.Literal(decodeUnicodeEscape(x[0][1:-1])))
 
