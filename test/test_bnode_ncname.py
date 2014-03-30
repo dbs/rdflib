@@ -6,6 +6,7 @@ try:
 except ImportError:
     from md5 import md5
 from rdflib.py3compat import format_doctest_out
+from six import PY3
 try:
     from uuid import uuid4
 except ImportError:
@@ -24,13 +25,20 @@ except ImportError:
         # Have doubts about this. random.seed will just hash the string 
         random.seed('%s%s%s' % (preseed, os.getpid(), time.time())) 
         del preseed 
-        t = long( time.time() * 1000.0 )
-        r = long( random.random()*100000000000000000L )
+        if PY3:
+            longint = 100000000000000000
+            t = int( time.time() * 1000.0 )
+            r = int( random.random()*longint )
+        else:
+            longint = long('100000000000000000L')
+            t = long( time.time() * 1000.0 )
+            r = long( random.random()*longint )
+
         try:
             a = socket.gethostbyname( socket.gethostname() )
         except:
             # if we can't get a network address, just imagine one
-            a = random.random()*100000000000000000L
+            a = random.random()*longint
         strdata = str(t)+' '+str(r)+' '+str(a)
         data = md5(strdata.encode('ascii')).hexdigest()
         yield data
