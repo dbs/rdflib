@@ -107,7 +107,7 @@ def _testPositive(uri, manifest):
 
     try:
         store.parse(cached_file(inDoc), publicID=inDoc, format=format)
-    except ParserError, pe:
+    except ParserError as pe:
         write("Failed '")
         write(inDoc)
         write("' failed with")
@@ -231,7 +231,7 @@ if __name__ == "__main__":
     import getopt
     try:
         optlist, args = getopt.getopt(sys.argv[1:], 'h:', ["help"])
-    except getopt.GetoptError, msg:
+    except getopt.GetoptError as msg:
         write(msg)
         # usage()
         
