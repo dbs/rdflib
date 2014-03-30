@@ -43,7 +43,7 @@ _LOGGER = logging.getLogger(__name__)
 import base64
 import xml.dom.minidom
 
-from six import text_type, string_types
+from six import integer_types, text_type, string_types, PY2
 from six.moves.urllib.parse import urlparse, urljoin, urldefrag
 from datetime import date, time, datetime
 from re import sub, compile
@@ -654,7 +654,7 @@ class Literal(Identifier):
         >>>
         """
 
-        if isinstance(self.value, (int, long, float)):
+        if isinstance(self.value, (integer_types, float)):
             return Literal(self.value.__neg__())
         else:
             raise TypeError("Not a number; %s" % repr(self))
@@ -675,7 +675,7 @@ class Literal(Identifier):
           File "<stdin>", line 1, in <module>
         TypeError: Not a number; rdflib.term.Literal(%(u)s'1')
         """
-        if isinstance(self.value, (int, long, float)):
+        if isinstance(self.value, (integer_types, float)):
             return Literal(self.value.__pos__())
         else:
             raise TypeError("Not a number; %s" % repr(self))
@@ -695,7 +695,7 @@ class Literal(Identifier):
           File "<stdin>", line 1, in <module>
         TypeError: Not a number; rdflib.term.Literal(%(u)s'1')
         """
-        if isinstance(self.value, (int, long, float)):
+        if isinstance(self.value, (integer_types, float)):
             return Literal(self.value.__abs__())
         else:
             raise TypeError("Not a number; %s" % repr(self))
@@ -717,7 +717,7 @@ class Literal(Identifier):
           File "<stdin>", line 1, in <module>
         TypeError: Not a number; rdflib.term.Literal(%(u)s'1')
         """
-        if isinstance(self.value, (int, long, float)):
+        if isinstance(self.value, (integer_types, float)):
             return Literal(self.value.__invert__())
         else:
             raise TypeError("Not a number; %s" % repr(self))
@@ -965,7 +965,7 @@ class Literal(Identifier):
 
         bool objects with xsd:boolean
 
-        a int, long or float with numeric xsd types
+        a integer_types or float with numeric xsd types
 
         isodate date,time,datetime objects with xsd:date,xsd:time or xsd:datetime
 
@@ -1035,7 +1035,7 @@ class Literal(Identifier):
             if (self.datatype == _XSD_STRING or self.datatype is None):
                 return text_type(self) == other
 
-        elif isinstance(other, (int, long, float)):
+        elif isinstance(other, (integer_types, float)):
             if self.datatype in _NUMERIC_LITERAL_TYPES:
                 return self.value == other
         elif isinstance(other, (date, datetime, time)):
@@ -1371,7 +1371,6 @@ _PythonToXSD = [
     (float, (None, _XSD_DOUBLE)),
     (bool, (lambda i:str(i).lower(), _XSD_BOOLEAN)),
     (int, (None, _XSD_INTEGER)),
-    (long, (None, _XSD_INTEGER)),
     (Decimal, (None, _XSD_DECIMAL)),
     (datetime, (lambda i:i.isoformat(), _XSD_DATETIME)),
     (date, (lambda i:i.isoformat(), _XSD_DATE)),
@@ -1384,6 +1383,11 @@ _PythonToXSD = [
     (xml.dom.minidom.DocumentFragment, (_writeXML, _RDF_HTMLLITERAL))
 ]
 
+if PY2:
+    _PythonToXSD.append(
+        (long, (None, _XSD_INTEGER))
+    )
+
 XSDToPython = {
     None : None, # plain literals map directly to value space
     URIRef(_XSD_PFX + 'time'): parse_time,
@@ -1395,16 +1399,11 @@ XSDToPython = {
     URIRef(_XSD_PFX + 'language'): None,
     URIRef(_XSD_PFX + 'boolean'): lambda i: i.lower() in ['1', 'true'],
     URIRef(_XSD_PFX + 'decimal'): Decimal,
-    URIRef(_XSD_PFX + 'integer'): long,
     URIRef(_XSD_PFX + 'nonPositiveInteger'): int,
-    URIRef(_XSD_PFX + 'long'): long,
     URIRef(_XSD_PFX + 'nonNegativeInteger'): int,
     URIRef(_XSD_PFX + 'negativeInteger'): int,
-    URIRef(_XSD_PFX + 'int'): long,
-    URIRef(_XSD_PFX + 'unsignedLong'): long,
     URIRef(_XSD_PFX + 'positiveInteger'): int,
     URIRef(_XSD_PFX + 'short'): int,
-    URIRef(_XSD_PFX + 'unsignedInt'): long,
     URIRef(_XSD_PFX + 'byte'): int,
     URIRef(_XSD_PFX + 'unsignedShort'): int,
     URIRef(_XSD_PFX + 'unsignedByte'): int,
@@ -1416,6 +1415,20 @@ XSDToPython = {
     _RDF_XMLLITERAL: _parseXML,
     _RDF_HTMLLITERAL: _parseHTML
 }
+
+
+if PY2:
+    XSDToPython[URIRef(_XSD_PFX + 'int')] = long
+    XSDToPython[URIRef(_XSD_PFX + 'integer')] = long
+    XSDToPython[URIRef(_XSD_PFX + 'long')] = long
+    XSDToPython[URIRef(_XSD_PFX + 'unsignedLong')] = long
+    XSDToPython[URIRef(_XSD_PFX + 'unsignedInt')] = long
+else:
+    XSDToPython[URIRef(_XSD_PFX + 'int')] = int
+    XSDToPython[URIRef(_XSD_PFX + 'integer')] = int
+    XSDToPython[URIRef(_XSD_PFX + 'long')] = int
+    XSDToPython[URIRef(_XSD_PFX + 'unsignedLong')] = int
+    XSDToPython[URIRef(_XSD_PFX + 'unsignedInt')] = int
 
 _toPythonMapping = {}
 
