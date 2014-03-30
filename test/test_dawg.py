@@ -47,17 +47,14 @@ from nose.tools import nottest, eq_
 from nose import SkipTest
 
 from six.moves.urllib.parse import urljoin
+from six import iteritems, next, BytesIO, u, PY3
 
-from StringIO import StringIO
-
-if sys.version_info[0:2] < (2, 7):
-    from StringIO import StringIO as BytesIO
-    assert BytesIO
+if PY3:
+    from .manifest import nose_tests, MF, UP
+    from .earl import report, add_test
 else:
-    from io import BytesIO
-
-from manifest import nose_tests, MF, UP
-from earl import report, add_test
+    from manifest import nose_tests, MF, UP
+    from earl import report, add_test
 
 def eq(a,b,msg):
     return eq_(a,b,msg+': (%r!=%r)'%(a,b))
@@ -158,7 +155,7 @@ def bindingsCompatible(a, b):
     def rowCompatible(x, y):
         m = {}
         y = y.asdict()
-        for v1, b1 in x.asdict().iteritems():
+        for v1, b1 in iteritems(x.asdict()):
             if v1 not in y:
                 return False
             if isinstance(b1, BNode):
@@ -182,7 +179,7 @@ def bindingsCompatible(a, b):
             return False
         return True
 
-    x = iter(a).next()
+    x = next(iter(a))
 
     for y in b:
         if rowCompatible(x, y):
@@ -317,7 +314,7 @@ def update_test(t):
             except:
                 print("(parser error)")
 
-            print(decodeStringEscape(unicode(e)))
+            print(decodeStringEscape(u(e)))
 
             import pdb
             pdb.post_mortem(sys.exc_info()[2])
@@ -482,7 +479,7 @@ def query_test(t):
             except:
                 print("(parser error)")
 
-            print(decodeStringEscape(unicode(e)))
+            print(decodeStringEscape(u(e)))
 
             import pdb
             pdb.post_mortem(sys.exc_info()[2])

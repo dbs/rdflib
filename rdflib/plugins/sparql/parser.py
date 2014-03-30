@@ -8,6 +8,7 @@ from __future__ import print_function
 
 import sys
 import re
+from six import PY3
 
 from pyparsing import (
     Literal, Regex, Optional, OneOrMore, ZeroOrMore, Forward,
@@ -16,7 +17,10 @@ from pyparsing import (
 from pyparsing import CaselessKeyword as Keyword  # watch out :)
 # from pyparsing import Keyword as CaseSensitiveKeyword
 
-from parserutils import Comp, Param, ParamList
+if PY3:
+    from .parserutils import Comp, Param, ParamList
+else:
+    from parserutils import Comp, Param, ParamList
 
 from . import operators as op
 from rdflib.py3compat import decodeUnicodeEscape, bytestype

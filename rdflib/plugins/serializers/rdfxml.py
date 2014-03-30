@@ -13,8 +13,12 @@ from rdflib.py3compat import b
 
 from xml.sax.saxutils import quoteattr, escape
 import xml.dom.minidom
+from six import iteritems, PY3
 
-from xmlwriter import ESCAPE_ENTITIES
+if PY3:
+    from .xmlwriter import ESCAPE_ENTITIES
+else:
+    from xmlwriter import ESCAPE_ENTITIES
 
 __all__ = ['fix', 'XMLSerializer', 'PrettyXMLSerializer']
 
@@ -40,7 +44,7 @@ class XMLSerializer(Serializer):
         else:
             bindings["rdf"] = RDFNS
 
-        for prefix, namespace in bindings.iteritems():
+        for prefix, namespace in iteritems(bindings):
             yield prefix, namespace
 
     def serialize(self, stream, base=None, encoding=None, **args):
@@ -182,7 +186,7 @@ class PrettyXMLSerializer(Serializer):
         if "xml_base" in args:
             writer.attribute(XMLBASE, args["xml_base"])
 
-        writer.namespaces(namespaces.iteritems())
+        writer.namespaces(iteritems(namespaces))
 
         # Write out subjects that can not be inline
         for subject in store.subjects():
