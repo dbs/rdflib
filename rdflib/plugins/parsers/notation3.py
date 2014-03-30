@@ -39,7 +39,7 @@ from decimal import Decimal
 
 from uuid import uuid4
 
-from six import text_type, PY2, PY3
+from six import text_type, unichr, PY2, PY3
 from rdflib.term import URIRef, BNode, Literal, Variable, _XSD_PFX, _unique_id
 from rdflib.graph import QuotedGraph, ConjunctiveGraph, Graph
 from rdflib import py3compat

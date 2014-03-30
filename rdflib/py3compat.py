@@ -4,7 +4,7 @@ Utility functions and objects to ease Python 3 compatibility.
 import sys
 import re
 import codecs
-from six import PY3, text_type
+from six import PY3, text_type, unichr
 
 try:
     from functools import wraps

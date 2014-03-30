@@ -10,7 +10,7 @@ from rdflib.term import URIRef as URI
 from rdflib.term import BNode as bNode
 from rdflib.term import Literal
 
-from six import text_type, string_types
+from six import text_type, string_types, unichr
 from rdflib.py3compat import cast_bytes, decodeUnicodeEscape, ascii
 
 __all__ = ['unquote', 'uriquote', 'Sink', 'NTriplesParser']
