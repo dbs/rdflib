@@ -1,5 +1,6 @@
 import codecs
 from xml.sax.saxutils import quoteattr, escape
+from six import iteritems
 
 __all__ = ['XMLWriter']
 
@@ -59,7 +60,7 @@ class XMLWriter(object):
     def element(self, uri, content, attributes={}):
         """Utility method for adding a complete simple element"""
         self.push(uri)
-        for k, v in attributes.iteritems():
+        for k, v in iteritems(attributes):
             self.attribute(k, v)
         self.text(content)
         self.pop()
