@@ -10,7 +10,7 @@ import sys
 import re
 import csv
 import getopt
-import ConfigParser
+from six.moves import configparser as ConfigParser
 import fileinput
 import codecs
 import time
