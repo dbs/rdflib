@@ -768,7 +768,7 @@ class Graph(Node):
 
         for labelProp in labelProperties:
             labels = filter(langfilter, self.objects(subject, labelProp))
-            if len(labels) == 0:
+            if len(list(labels)) == 0:
                 continue
             else:
                 return [(labelProp, l) for l in labels]
