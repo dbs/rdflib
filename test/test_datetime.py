@@ -9,7 +9,7 @@ from isodate.isostrf import DATE_EXT_COMPLETE, TZ_EXT
 from rdflib.term import URIRef
 from rdflib.term import Literal
 from rdflib.namespace import XSD
-
+from six import u
 
 class TestRelativeBase(unittest.TestCase):
     def test_equality(self):        
@@ -27,7 +27,7 @@ class TestRelativeBase(unittest.TestCase):
 
         # datetime with microseconds should be cast as a literal with using
         # XML Schema dateTime as the literal datatype
-        self.assertEquals(unicode(l), '2009-06-15T23:37:06.522630')
+        self.assertEquals(u(l), '2009-06-15T23:37:06.522630')
         self.assertEquals(l.datatype, XSD.dateTime)
 
         dt2 = l.toPython()

@@ -5,6 +5,8 @@ import re
 from rdflib import Graph, Literal, URIRef
 from rdflib.plugins.parsers import ntriples
 from rdflib.py3compat import bytestype, b
+from six import text_type
+
 log = logging.getLogger(__name__)
 
 class NTTestCase(unittest.TestCase):
@@ -32,7 +34,7 @@ class NTTestCase(unittest.TestCase):
         safe = """<http://example.org/alice/foaf.rdf#me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> <http://example.org/alice/foaf1.rdf> ."""
         ntriples.validate = False
         res = ntriples.unquote(safe)
-        self.assert_(isinstance(res, unicode))
+        self.assert_(isinstance(res, text_type))
 
     def test_validating_unquote(self):
         quot = """<http://example.org/alice/foaf.rdf#me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> <http://example.org/alice/foaf1.rdf> ."""

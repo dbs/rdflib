@@ -2,6 +2,7 @@ from collections import namedtuple
 from nose.tools import nottest
 
 from rdflib import Graph, RDF, RDFS, Namespace
+from six import u
 
 MF = Namespace('http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#')
 QT = Namespace('http://www.w3.org/2001/sw/DataAccess/tests/test-query#')
@@ -17,7 +18,7 @@ def read_manifest(f, base=None, legacy=False):
 
     def _str(x):
         if x is not None:
-            return unicode(x)
+            return u(x)
         return None
 
     g = Graph()
