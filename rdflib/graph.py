@@ -5,6 +5,7 @@ from rdflib.namespace import Namespace  # required for doctests
 n = Namespace('xxx')
 del n
 from rdflib.py3compat import format_doctest_out
+from six import next
 
 __doc__ = format_doctest_out("""\
 
@@ -680,13 +681,13 @@ class Graph(Node):
             values = self.predicates(subject, object)
 
         try:
-            retval = values.next()
+            retval = next(values)
         except StopIteration:
             retval = default
         else:
             if any is False:
                 try:
-                    values.next()
+                    next(values)
                     msg = ("While trying to find a value for (%s, %s, %s) the"
                            " following multiple values where found:\n" %
                            (subject, predicate, object))

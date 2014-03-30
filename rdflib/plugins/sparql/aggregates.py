@@ -7,6 +7,7 @@ from rdflib.plugins.sparql.operators import numeric
 from rdflib.plugins.sparql.datatypes import type_promotion
 
 from rdflib.plugins.sparql.compat import num_max, num_min
+from six import next
 
 from decimal import Decimal
 
@@ -101,7 +102,7 @@ def agg_Count(a, group, bindings):
 
 def agg_Sample(a, group, bindings):
     try:
-        bindings[a.res] = _eval(a.vars, iter(group).next())
+        bindings[a.res] = _eval(a.vars, next(iter(group)))
     except StopIteration:
         pass  # no res
 

@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 from threading import Lock
+from six import next
 
 
 class ResponsibleGenerator(object):
@@ -19,7 +20,7 @@ class ResponsibleGenerator(object):
         return self
 
     def next(self):
-        return self.gen.next()
+        return next(self.gen)
 
 
 class ConcurrentStore(object):

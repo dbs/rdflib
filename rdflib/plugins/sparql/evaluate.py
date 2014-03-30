@@ -26,6 +26,7 @@ from rdflib.plugins.sparql.evalutils import (
     _filter, _eval, _join, _diff, _minus, _fillTemplate, _ebv)
 
 from rdflib.plugins.sparql.aggregates import evalAgg
+from six import next
 
 
 def evalBGP(ctx, bgp):
@@ -328,7 +329,7 @@ def evalSlice(ctx, slice):
     res = evalPart(ctx, slice.p)
     i = 0
     while i < slice.start:
-        res.next()
+        next(res)
         i += 1
     i = 0
     for x in res:

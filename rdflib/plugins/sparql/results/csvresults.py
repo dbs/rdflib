@@ -10,7 +10,7 @@ http://www.w3.org/TR/sparql11-results-csv-tsv/
 import codecs
 import csv
 
-from six import PY3
+from six import next, PY3
 
 from rdflib import Variable, BNode, URIRef, Literal, py3compat
 
@@ -30,7 +30,7 @@ class CSVResultParser(ResultParser):
             source = codecs.getreader('utf-8')(source)
 
         reader = csv.reader(source, delimiter=self.delim)
-        r.vars = [Variable(x) for x in reader.next()]
+        r.vars = [Variable(x) for x in next(reader)]
         r.bindings = []
 
         for row in reader:

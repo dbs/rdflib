@@ -17,7 +17,7 @@ import time
 import datetime
 import warnings
 
-from six import text_type
+from six import next, text_type
 from six.moves.urllib.parse import quote
 
 import rdflib
@@ -321,10 +321,10 @@ class CSV2RDF(object):
 
         # skip lines at the start
         for x in range(self.SKIP):
-            csvreader.next()
+            next(csvreader)
 
         # read header line
-        header_labels = list(csvreader.next())
+        header_labels = list(next(csvreader))
         headers = dict(
             enumerate([self.PROPBASE[toProperty(x)] for x in header_labels]))
         # override header properties if some are given

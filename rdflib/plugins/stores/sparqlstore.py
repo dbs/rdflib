@@ -54,7 +54,7 @@ from rdflib.query import Result
 from rdflib import Variable, Namespace, BNode, URIRef, Literal
 
 import httplib
-from six import string_types
+from six import next, string_types
 from six.moves.urllib.parse import urlparse, urlencode
 
 class NSSPARQLWrapper(SPARQLWrapper):
@@ -402,8 +402,8 @@ class SPARQLStore(NSSPARQLWrapper, Store):
                 self.addDefaultGraph(context.identifier)
             self.setQuery(q)
             doc = ElementTree.parse(SPARQLWrapper.query(self).response)
-            rt, vars = iter(
-                TraverseSPARQLResultDOM(doc, asDictionary=True)).next()
+            rt, vars = next(iter(
+                TraverseSPARQLResultDOM(doc, asDictionary=True)))
             return int(rt.get(Variable("c")))
 
     def contexts(self, triple=None):
