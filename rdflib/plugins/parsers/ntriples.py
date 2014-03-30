@@ -93,7 +93,7 @@ def unquote(s):
                 raise ParseError("Illegal literal character: %r" % s[0])
         return u''.join(result)
 
-r_hibyte = re.compile(ur'([\x80-\xFF])')
+r_hibyte = re.compile(r'([\x80-\xFF])')
 
 
 def uriquote(uri):
