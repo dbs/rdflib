@@ -38,7 +38,12 @@ from time import time
 from time import timezone
 
 from os.path import splitext
-from StringIO import StringIO
+from six import PY3
+
+if PY3:
+    from io import StringIO
+else:
+    from StringIO import StringIO
 
 from rdflib.exceptions import ContextTypeError
 from rdflib.exceptions import ObjectTypeError
