@@ -75,7 +75,7 @@ def nose_tst_earl_report(generator, earl_report_name=None):
             t[0](t[1])
             add_test(t[1].uri, "passed")
             success += 1
-        except SkipTest, e:
+        except SkipTest as e:
             add_test(t[1].uri, "untested", e.message)
             print("skipping %s - %s" % (t[1].uri, e.message))
             skip += 1
