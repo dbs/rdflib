@@ -8,7 +8,7 @@ from __future__ import print_function
 
 import sys
 import re
-from six import PY3
+from six import unichr, PY3
 
 from pyparsing import (
     Literal, Regex, Optional, OneOrMore, ZeroOrMore, Forward,
