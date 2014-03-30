@@ -53,7 +53,7 @@ from rdflib.store import Store
 from rdflib.query import Result
 from rdflib import Variable, Namespace, BNode, URIRef, Literal
 
-import httplib
+from six.moves import http_client as httplib
 from six import next, string_types
 from six.moves.urllib.parse import urlparse, urlencode
 
@@ -238,8 +238,9 @@ class SPARQLStore(NSSPARQLWrapper, Store):
         """ """
         raise TypeError('The SPARQL store is read only')
 
-    def add(self, (subject, predicate, obj), context=None, quoted=False):
+    def add(self, triple, context=None, quoted=False):
         """ Add a triple to the store of triples. """
+        (subject, predicate, obj) = triple
         raise TypeError('The SPARQL store is read only')
 
     def addN(self, quads):
