@@ -42,7 +42,7 @@ class Event(object):
         self.__dict__.update(kw)
 
     def __repr__(self):
-        attrs = self.__dict__.keys()
+        attrs = list(self.__dict__.keys())
         attrs.sort()
         return '<rdflib.events.Event %s>' % ([a for a in attrs],)
 

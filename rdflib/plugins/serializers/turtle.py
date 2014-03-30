@@ -113,7 +113,7 @@ class RecursiveSerializer(Serializer):
             if (prop in properties) and (prop not in seen):
                 propList.append(prop)
                 seen[prop] = True
-        props = properties.keys()
+        props = list(properties.keys())
         props.sort()
         for prop in props:
             if prop not in seen:
