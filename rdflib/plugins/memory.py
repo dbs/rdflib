@@ -1,5 +1,6 @@
 from rdflib.term import BNode
 from rdflib.store import Store, NO_STORE, VALID_STORE
+from six import iteritems
 
 __all__ = ['Memory', 'IOMemory']
 
@@ -160,7 +161,7 @@ class Memory(Store):
         return self.__prefix.get(namespace, None)
 
     def namespaces(self):
-        for prefix, namespace in self.__namespace.iteritems():
+        for prefix, namespace in iteritems(self.__namespace):
             yield prefix, namespace
 
     def __contexts(self):
@@ -240,7 +241,7 @@ class IOMemory(Store):
         return self.__prefix.get(namespace, None)
 
     def namespaces(self):
-        for prefix, namespace in self.__namespace.iteritems():
+        for prefix, namespace in iteritems(self.__namespace):
             yield prefix, namespace
 
     def add(self, triple, context, quoted=False):
@@ -438,7 +439,7 @@ class IOMemory(Store):
         if not skipQuoted:
             return ctxs.keys()
 
-        return [cid for cid, quoted in ctxs.iteritems() if not quoted]
+        return [cid for cid, quoted in iteritems(ctxs) if not quoted]
 
     def __tripleHasContext(self, enctriple, cid):
         """return True iff the triple exists in the given context"""

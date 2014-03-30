@@ -31,6 +31,7 @@ from rdflib.serializer import Serializer
 from rdflib.query import ResultParser, ResultSerializer, \
     Processor, Result, UpdateProcessor
 from rdflib.exceptions import Error
+from six import iteritems
 
 __all__ = [
     'register', 'get', 'plugins', 'PluginException', 'Plugin', 'PKGPlugin']
@@ -110,7 +111,7 @@ except ImportError:
     pass  # TODO: log a message
 else:
     # add the plugins specified via pkg_resources' EntryPoints.
-    for entry_point, kind in entry_points.iteritems():
+    for entry_point, kind in iteritems(entry_points):
         for ep in iter_entry_points(entry_point):
             _plugins[(ep.name, kind)] = PKGPlugin(ep.name, kind, ep)
 
