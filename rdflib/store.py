@@ -32,6 +32,7 @@ NO_STORE = -1
 UNKNOWN = None
 
 from rdflib.events import Dispatcher, Event
+from six import PY3
 
 __all__ = ['StoreCreatedEvent', 'TripleAddedEvent', 'TripleRemovedEvent',
            'NodePickler', 'Store']
@@ -68,7 +69,11 @@ class TripleRemovedEvent(Event):
       - the ``graph`` from which the triple was removed
     """
 
-from cPickle import Pickler, Unpickler, UnpicklingError
+if PY3:
+    from pickle import Pickler, Unpickler, UnpicklingError
+else:
+    from cPickle import Pickler, Unpickler, UnpicklingError
+
 try:
     from io import BytesIO
     assert BytesIO
