@@ -4,10 +4,12 @@ import warnings
 from unittest import TestCase
 from rdflib.graph import ConjunctiveGraph, URIRef
 from nose.exc import SkipTest
+from six import unichr
+
 # Workaround for otherwise-dropped HTML entities
 
 import re
-from htmlentitydefs import name2codepoint
+from six.moves.html_entities import name2codepoint
 
 
 def htmlentitydecode(s):
