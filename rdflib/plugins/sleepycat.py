@@ -104,7 +104,7 @@ class Sleepycat(Store):
         if create:
             dbopenflags |= db.DB_CREATE
 
-        dbmode = 0660
+        dbmode = 0o660
         dbsetflags = 0
 
         # create and open the DBs
