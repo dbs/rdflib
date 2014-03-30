@@ -1,8 +1,7 @@
-import thread
 import time
-import BaseHTTPServer
 
 from rdflib import Graph
+from six.moves import BaseHTTPServer, _thread as thread
 
 """
 Test that correct content negoation headers are passed 
