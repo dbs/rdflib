@@ -2,12 +2,18 @@
 
 """
 
+from six import PY3
+
 from rdflib import ConjunctiveGraph
 from rdflib.namespace import split_uri
 from rdflib.compare import graph_diff, isomorphic
 
-from manifest import nose_tests, RDFT
-from testutils import nose_tst_earl_report
+if PY3:
+    from .manifest import nose_tests, RDFT
+    from .testutils import nose_tst_earl_report
+else:
+    from manifest import nose_tests, RDFT
+    from testutils import nose_tst_earl_report
 
 verbose = False
 

@@ -3,10 +3,15 @@ from __future__ import print_function
 import sys
 import isodate
 import datetime
+from six import PY3
 
 from traceback import print_exc
 from nose import SkipTest
-from earl import add_test, report
+
+if PY3:
+    from .earl import add_test, report
+else:
+    from earl import add_test, report
 
 from rdflib import BNode, Graph, ConjunctiveGraph
 

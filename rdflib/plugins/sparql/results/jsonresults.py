@@ -1,12 +1,14 @@
 from rdflib.query import (
     Result, ResultException, ResultSerializer, ResultParser)
 from rdflib import Literal, URIRef, BNode, Variable
-
-from six import text_type
 from rdflib.py3compat import bytestype
 
+from six import text_type, PY3
 
-import jsonlayer
+if PY3:
+    from . import jsonlayer
+else:
+    import jsonlayer
 
 """A Serializer for SPARQL results in JSON:
 
